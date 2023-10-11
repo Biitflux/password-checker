@@ -9,8 +9,8 @@ public class Main {
         try {
             BlacklistFile.CreateBlacklist();
             getUserInput.getUserPassword();
-        } catch (PwChExceptionManager.UserInputIsInvalid | PwChExceptionManager.WordIsInBlacklist |
-                 FileNotFoundException e) {
+        } catch (PwChExceptionManager.UserInputIsInvalidTooShort | PwChExceptionManager.WordIsInBlacklist |
+                 FileNotFoundException |PwChExceptionManager.UserInputIsInvalidSpacebar e) {
             System.err.println(e);
         } catch (Exception e) {
             System.err.println("An unexpected error has occurred: " + e);
@@ -23,16 +23,19 @@ public class Main {
 
 // Der User wird aufgefordert sein Password einzugeben
 class getUserInput{
-    public static void getUserPassword() throws PwChExceptionManager.UserInputIsInvalid, PwChExceptionManager.WordIsInBlacklist, FileNotFoundException {
+    public static void getUserPassword() throws PwChExceptionManager.UserInputIsInvalidTooShort, PwChExceptionManager.WordIsInBlacklist, FileNotFoundException, PwChExceptionManager.UserInputIsInvalidSpacebar {
         System.out.print("Enter your password to test it: ");
         String usersPassword = GloVar.scn.nextLine();
 
 
-        if(usersPassword.contains(" ") || usersPassword.length() < 8){
-            throw new PwChExceptionManager.UserInputIsInvalid();
+        if(usersPassword.length() < 8){
+            throw new PwChExceptionManager.UserInputIsInvalidTooShort();
         } else if (BlacklistFile.SearchWordInBlacklist(usersPassword)) {
             throw new PwChExceptionManager.WordIsInBlacklist();
-        } else{
+        } else if(usersPassword.contains(" ")){
+            throw new PwChExceptionManager.UserInputIsInvalidSpacebar();
+        }
+        else{
             CheckPassword.GetPasswordScore(usersPassword);
         }
     }
@@ -71,9 +74,9 @@ class CheckPassword{
     // Wertet den Score aus
     public static void EvaluateScore(int score){
         if (score <= 8){
-            System.out.println("⛔️ Your password is " + GloVar.RED + "very weak" + GloVar.RESET +"! Try a better one!");
+            System.out.println("⛔️ Your password is " + GloVar.RED + "weak" + GloVar.RESET +"! Try a better one!");
         } else if (score <= 17) {
-            System.out.println("⚠️ Your password is " + GloVar.YELLOW + "medium strong" + GloVar.RESET +"! Rather take a better!");
+            System.out.println("⚠️ Your password is " + GloVar.YELLOW + "moderate" + GloVar.RESET +"! Rather take a better!");
         } else if (score <= 23) {
             System.out.println("✅ Your password is " + GloVar.GREEN + "strong" + GloVar.RESET +"! Good Password, but goes better!");
         } else {
@@ -81,14 +84,14 @@ class CheckPassword{
         }
         try {
             AnotherTry.Again();
-        } catch (PwChExceptionManager.UserInputIsInvalid | PwChExceptionManager.WordIsInBlacklist |
-                 FileNotFoundException e) {
+        } catch (PwChExceptionManager.UserInputIsInvalidTooShort | PwChExceptionManager.WordIsInBlacklist |
+                 FileNotFoundException | PwChExceptionManager.UserInputIsInvalidSpacebar e) {
             System.err.println(e);
         }
     }
 }
 
-// Blacklist wird erstellt und dann überprüft ob das Password enthalten ist
+// Blacklist wird erstellt und dann überprüft, ob das Password enthalten ist
 class BlacklistFile {
 
     public static void CreateBlacklist() {
@@ -122,7 +125,7 @@ class BlacklistFile {
 
 // Erneuter Aufruf des Programmes
 class AnotherTry{
-    public static void Again() throws PwChExceptionManager.UserInputIsInvalid, PwChExceptionManager.WordIsInBlacklist, FileNotFoundException {
+    public static void Again() throws PwChExceptionManager.UserInputIsInvalidTooShort, PwChExceptionManager.WordIsInBlacklist, FileNotFoundException, PwChExceptionManager.UserInputIsInvalidSpacebar {
         System.out.print("Do you want to do again? ");
         String answer = GloVar.scn.nextLine();
 
@@ -131,7 +134,7 @@ class AnotherTry{
         }else if (answer.matches("^.*?(no|No|nein|Nein|n|N|false|False).*$")) {
             System.exit(0);
         } else {
-            throw new PwChExceptionManager.UserInputIsInvalid();
+            throw new PwChExceptionManager.UserInputIsInvalidTooShort();
         }
     }
 
@@ -149,16 +152,19 @@ class GloVar{
 
 // Exceptions
 class PwChExceptionManager {
-    static class UserInputIsInvalid extends Exception {
-        public UserInputIsInvalid() {
-            super("Your input was invalid. Your password must be at least 8 characters long! Please try again!");
+    static class UserInputIsInvalidTooShort extends Exception {
+        public UserInputIsInvalidTooShort() {
+            super("Your input was invalid the password must be at least 8 characters long! Please try again!");
         }
     }
     static class WordIsInBlacklist extends Exception {
         public WordIsInBlacklist() {
-            super("Your input was invalid. Your password is blacklisted! Please try again!");
+            super("Your input was invalid the password is blacklisted! Please try again!");
         }
     }
 
+    static class UserInputIsInvalidSpacebar extends Exception{
+        public UserInputIsInvalidSpacebar(){super("Your input was invalid the password must not contain spaces!");}
+    }
 }
 
