@@ -1,0 +1,26 @@
+Ungültig:
+
+Die Länge des Passworts ist weniger als X Zeichen (zum Beispiel 6 Zeichen).
+Es enthält nur eine Art von Zeichen (nur Buchstaben, nur Zahlen, nur Sonderzeichen).
+
+Schwach:
+
+Das Passwort erfüllt die Mindestlänge.
+Es enthält mindestens einen Großbuchstaben.
+Es enthält mindestens einen Kleinbuchstaben.
+Es enthält mindestens eine Zahl.
+
+Normal:
+
+Erfüllt die Anforderungen für ein schwaches Passwort.
+Es enthält mindestens ein Sonderzeichen (z. B. !, @, #, $, etc.).
+Es enthält keine aufeinanderfolgenden Zeichen (z. B. "abc", "123").
+Es enthält keine wiederholten Zeichen (z. B. "aa", "11").
+Stark:
+
+Erfüllt die Anforderungen für ein normales Passwort.
+Es enthält mindestens zwei Großbuchstaben.
+Es enthält mindestens zwei Kleinbuchstaben.
+Es enthält mindestens zwei Zahlen.
+Es enthält mindestens zwei Sonderzeichen.
+Es enthält keine Wörter aus dem Wörterbuch.
