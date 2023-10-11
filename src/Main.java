@@ -1,11 +1,11 @@
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
 
 //Porgrammstart
+
+//Das ist eine Test-Nachricht
 public class Main {
     public static void main(String[] Args) {
         try {
@@ -100,17 +100,15 @@ class BlacklistFile {
                 System.out.println("File created: " + FileObj.getName());
             }
         } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            System.out.println("An error occurred." + e);
         }
 
     }
 
     public static boolean SearchWordInBlacklist(String usersPassword) throws FileNotFoundException {
         File FileObj = new File(GloVar.FILENAME);
-        Scanner myReader = new Scanner(FileObj);
-        try{
-            while(myReader.hasNextLine()){
+        try (Scanner myReader = new Scanner(FileObj)) {
+            while (myReader.hasNextLine()) {
                 String line = myReader.nextLine();
                 String[] words = line.split("\\s+");
                 for (String word : words) {
@@ -119,8 +117,6 @@ class BlacklistFile {
                     }
                 }
             }
-        } finally {
-            myReader.close();
         }
         return false;
     }
@@ -134,7 +130,7 @@ class AnotherTry{
 
         if (answer.matches("^.*?(yes|Yes|y|N|ja|Ja|j|J|true|True).*$")) {
             getUserInput.getUserPassword();
-        }else if (answer.matches("^.*?(no|No|n|N|nein|Nein|n|N|false|False).*$")) {
+        }else if (answer.matches("^.*?(no|No|nein|Nein|n|N|false|False).*$")) {
             System.exit(0);
         } else {
             throw new PwChExceptionManager.UserInputIsInvalid();
@@ -151,9 +147,6 @@ class GloVar{
     public static String YELLOW = "\u001B[33m";
     public static String RED = "\u001B[31m";
     public static String FILENAME = "blacklist.txt";
-
-    public static List<String> Userinput = new ArrayList<String>();
-
 }
 
 // Exceptions
