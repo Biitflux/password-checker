@@ -4,8 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 //Porgrammstart
-
-//Das ist eine Test-Nachricht
+//Hallo!
 public class Main {
     public static void main(String[] Args) {
         try {
