@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 //Porgrammstart
+
 public class Main {
     public static void main(String[] Args) {
         try {
@@ -129,8 +130,8 @@ class AnotherTry{
         System.out.print("Do you want to do again? ");
         String answer = GloVar.scn.nextLine();
 
-        if (answer.matches("^.*?(yes|Yes|y|N|ja|Ja|j|J|true|True).*$")) {
-            getUserInput.getUserPassword();
+        if (answer.matches("^.*?(yes|Yes|y|Y|ja|Ja|j|J|true|True).*$")) {
+            Main.main(null);
         }else if (answer.matches("^.*?(no|No|nein|Nein|n|N|false|False).*$")) {
             System.exit(0);
         } else {
