@@ -62,7 +62,7 @@ class CheckPassword{
 
         if (SpecialCharacterCount == 1) {
             score += 3;
-        } else if (SpecialCharacterCount <=2) {
+        } else if (SpecialCharacterCount ==2) {
             score += 5;
         } else {
             score +=10;
